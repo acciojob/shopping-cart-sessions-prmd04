@@ -57,7 +57,10 @@ function addToCart(productId) {
   const product = products.find((p) => p.id === productId);
   if (!product) return;
 
-  const cart = JSON.parse(sessionStorage.getItem("cart")) || [];
+  // Proper fallback for empty cart
+  const cartRaw = sessionStorage.getItem("cart");
+  const cart = cartRaw ? JSON.parse(cartRaw) : [];
+
   cart.push(product);
 
   sessionStorage.setItem("cart", JSON.stringify(cart));
