@@ -26,22 +26,26 @@ function renderProducts() {
 
 // Render cart from sessionStorage
 function renderCart() {
-  cartList.innerHTML = ""; // Clear previous cart display
-  const cart = JSON.parse(sessionStorage.getItem("cart")) || [];
+  cartList.innerHTML = "";
+  const cartData = sessionStorage.getItem("cart");
+  if (!cartData) return;
+
+  const cart = JSON.parse(cartData);
 
   cart.forEach((item, index) => {
     const li = document.createElement("li");
-    li.textContent = `${item.name} - $${item.price} `;
+    li.textContent = `${item.name} - $${item.price}`;
 
     const removeBtn = document.createElement("button");
     removeBtn.innerText = "Remove from Cart";
     removeBtn.classList.add("remove-btn");
-    removeBtn.setAttribute("data-index", index); // use index to remove correct item
+    removeBtn.setAttribute("data-index", index);
 
-    li.appendChild(removeBtn); 
-    cartList.appendChild(li); 
+    li.appendChild(removeBtn);
+    cartList.appendChild(li);
   });
 }
+
 function removeFromCart(index) {
   const cart = JSON.parse(sessionStorage.getItem("cart")) || [];
 
@@ -57,9 +61,8 @@ function addToCart(productId) {
   const product = products.find((p) => p.id === productId);
   if (!product) return;
 
-  // Proper fallback for empty cart
-  const cartRaw = sessionStorage.getItem("cart");
-  const cart = cartRaw ? JSON.parse(cartRaw) : [];
+  const cartData = sessionStorage.getItem("cart");
+  const cart = cartData ? JSON.parse(cartData) : [];
 
   cart.push(product);
 
